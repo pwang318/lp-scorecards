@@ -9,123 +9,89 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --navy:#1a2e5a;--navy-light:#243d7a;--gold:#b8922a;--gold-light:#f0c84a;
-  --bg:#f4f6fb;--card:#ffffff;--border:#e0e4ef;--text:#1a1f2e;--muted:#6b7280;
-  --green:#2a7a3b;--gray:#9ca3af;
-}
+:root{--navy:#1a2e5a;--navy-light:#243d7a;--gold:#b8922a;--gold-light:#f0c84a;--bg:#f4f6fb;--card:#ffffff;--border:#e0e4ef;--text:#1a1f2e;--muted:#6b7280;--green:#2a7a3b;--gray:#9ca3af;}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-
 .header{background:var(--navy);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
 .header-left{display:flex;align-items:center;gap:14px}
 .nfm-logo{height:28px;filter:brightness(0) invert(1);flex-shrink:0}
-.header-divider{width:1px;height:32px;background:rgba(255,255,255,0.25);flex-shrink:0}
-.headshot{width:52px;height:52px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid var(--gold);flex-shrink:0}
+.header-divider{width:1px;height:36px;background:rgba(255,255,255,0.25);flex-shrink:0}
+.headshot{width:52px;height:52px;border-radius:50%;object-fit:cover;object-position:top center;border:2px solid var(--gold);flex-shrink:0}
 .header-brand{display:flex;flex-direction:column;gap:1px}
-.header-team{color:var(--gold-light);font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase}
+.header-team{color:var(--gold-light);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
 .header-name{color:#fff;font-size:16px;font-weight:600;line-height:1.2}
 .header-week{color:var(--gold-light);font-size:12px;font-weight:500;background:rgba(255,255,255,0.08);padding:5px 12px;border-radius:20px;border:1px solid rgba(240,200,74,0.3);white-space:nowrap}
-
 .tab-nav{background:var(--navy-light);display:flex}
 .tab-nav button{flex:1;padding:11px 8px;background:transparent;border:none;color:rgba(255,255,255,0.6);font-size:13px;font-weight:500;font-family:inherit;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.15s}
 .tab-nav button.active{color:#fff;border-bottom-color:var(--gold-light)}
 .tab-nav button:hover:not(.active){color:#fff}
-
 .week-bar{background:var(--navy);padding:8px 24px;display:flex;align-items:center;justify-content:center;gap:14px;border-top:1px solid rgba(255,255,255,0.08)}
 .week-bar button{background:transparent;border:1px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);padding:4px 12px;border-radius:16px;font-size:12px;cursor:pointer;font-family:inherit;transition:all 0.15s}
 .week-bar button:hover{background:rgba(255,255,255,0.1);color:#fff}
 .week-bar span{color:#fff;font-size:13px;font-weight:500}
-
 .main{padding:20px 16px 40px;max-width:700px;margin:0 auto}
 .tab-panel{display:none}.tab-panel.active{display:block}
-
 .summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:10px;margin-bottom:18px}
 .summary-card{background:var(--card);border-radius:12px;border:1px solid var(--border);padding:12px 14px;text-align:center}
-.s-icon{font-size:18px;margin-bottom:4px}
-.s-val{font-size:22px;font-weight:700;line-height:1}
-.s-label{font-size:10px;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:0.04em}
+.s-icon{font-size:18px;margin-bottom:4px}.s-val{font-size:22px;font-weight:700;line-height:1}
+.s-label{font-size:10px;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
 .s-goal{font-size:11px;color:var(--muted);margin-top:2px}
 .bar-wrap{height:4px;background:#e9ecf3;border-radius:2px;margin-top:6px;overflow:hidden}
-.bar-fill{height:100%;border-radius:2px;transition:width 0.4s}
-
+.bar-fill{height:100%;border-radius:2px;transition:width .4s}
 .card{background:var(--card);border-radius:14px;border:1px solid var(--border);overflow:hidden;margin-bottom:14px}
 .card-header{background:var(--navy);padding:12px 16px;display:flex;align-items:center;justify-content:space-between}
 .card-header span{color:#fff;font-size:13px;font-weight:600}
 .card-header .goal-hint{color:var(--gold-light);font-size:11px}
-
 table{width:100%;border-collapse:collapse}
 thead tr{background:#f8f9fd}
-thead th{font-size:11px;font-weight:600;color:var(--muted);padding:8px 6px;text-align:center;letter-spacing:0.04em;text-transform:uppercase;border-bottom:1px solid var(--border)}
+thead th{font-size:11px;font-weight:600;color:var(--muted);padding:8px 6px;text-align:center;letter-spacing:.04em;text-transform:uppercase;border-bottom:1px solid var(--border)}
 thead th:first-child{text-align:left;padding-left:14px;width:42%}
 thead th.total-th{color:var(--gold)}
-tbody tr{border-bottom:1px solid var(--border);transition:background 0.1s}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
 tbody tr:last-child{border-bottom:none}
 tbody tr:hover{background:#f8f9fd}
 tbody td{padding:10px 6px;text-align:center;vertical-align:middle}
 tbody td:first-child{text-align:left;padding-left:14px}
-
 .metric-label{display:flex;align-items:center;gap:8px}
-.metric-icon{font-size:16px}
-.metric-text{font-size:13px;font-weight:500}
-
-.day-input{width:44px;padding:5px 4px;text-align:center;font-size:13px;font-weight:500;border:1.5px solid var(--border);border-radius:8px;background:#f8f9fd;color:var(--text);font-family:inherit;transition:all 0.15s;-moz-appearance:textfield}
+.metric-icon{font-size:16px}.metric-text{font-size:13px;font-weight:500}
+.day-input{width:44px;padding:5px 4px;text-align:center;font-size:13px;font-weight:500;border:1.5px solid var(--border);border-radius:8px;background:#f8f9fd;color:var(--text);font-family:inherit;transition:all .15s;-moz-appearance:textfield}
 .day-input::-webkit-inner-spin-button,.day-input::-webkit-outer-spin-button{-webkit-appearance:none}
-.day-input:focus{outline:none;border-color:var(--navy);background:#fff;box-shadow:0 0 0 3px rgba(26,46,90,0.12)}
-
+.day-input:focus{outline:none;border-color:var(--navy);background:#fff;box-shadow:0 0 0 3px rgba(26,46,90,.12)}
 .total-wrap{display:flex;flex-direction:column;align-items:center;gap:3px}
-.total-num{font-size:15px;font-weight:700}
-.total-goal{font-size:10px;color:var(--muted)}
+.total-num{font-size:15px;font-weight:700}.total-goal{font-size:10px;color:var(--muted)}
 .mini-bar{width:40px;height:3px;background:#e9ecf3;border-radius:2px;overflow:hidden}
-.mini-bar-fill{height:100%;border-radius:2px;transition:width 0.3s}
-
+.mini-bar-fill{height:100%;border-radius:2px;transition:width .3s}
 .save-row{display:flex;align-items:center;gap:12px;margin-top:6px}
-.save-btn{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:10px 24px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:background 0.15s;flex-shrink:0}
-.save-btn:hover{background:var(--navy-light)}
-.save-btn:active{transform:scale(0.98)}
-.save-msg{font-size:13px;color:var(--green);font-weight:500;opacity:0;transition:opacity 0.3s}
-.save-msg.show{opacity:1}
-.save-msg.error{color:#c0392b}
+.save-btn{background:var(--navy);color:#fff;border:none;border-radius:10px;padding:10px 24px;font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:background .15s;flex-shrink:0}
+.save-btn:hover{background:var(--navy-light)}.save-btn:active{transform:scale(.98)}
+.save-msg{font-size:13px;color:var(--green);font-weight:500;opacity:0;transition:opacity .3s}
+.save-msg.show{opacity:1}.save-msg.error{color:#c0392b}
 .footer{text-align:center;margin-top:28px;font-size:11px;color:var(--muted)}
-
 .history-controls{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap}
 .history-controls label{font-size:12px;color:var(--muted)}
 .history-controls input[type=date]{padding:6px 10px;border:1px solid var(--border);border-radius:8px;font-size:12px;font-family:inherit;background:var(--card);color:var(--text)}
 .history-controls button{padding:6px 14px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-size:12px;font-family:inherit;cursor:pointer}
 .history-table{width:100%;border-collapse:collapse;font-size:12px}
-.history-table th{background:var(--navy);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:600;letter-spacing:0.03em}
+.history-table th{background:var(--navy);color:#fff;padding:8px 10px;text-align:center;font-size:11px;font-weight:600;letter-spacing:.03em}
 .history-table th:first-child{text-align:left}
 .history-table td{padding:8px 10px;text-align:center;border-bottom:1px solid var(--border)}
 .history-table td:first-child{text-align:left;font-weight:500}
 .history-table tr:last-child td{border-bottom:none}
 .history-table tr:hover td{background:#f8f9fd}
 .pct-badge{display:inline-block;padding:2px 7px;border-radius:10px;font-size:10px;font-weight:600}
-.pct-green{background:#dcf5e3;color:#1a5c2a}
-.pct-amber{background:#fef3dc;color:#7a4f0a}
-.pct-gray{background:#f0f0f0;color:#555}
+.pct-green{background:#dcf5e3;color:#1a5c2a}.pct-amber{background:#fef3dc;color:#7a4f0a}.pct-gray{background:#f0f0f0;color:#555}
 .chart-wrap{background:var(--card);border-radius:14px;border:1px solid var(--border);padding:16px;margin-top:14px}
 .chart-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px}
 .chart-area{position:relative;height:200px}
 .history-empty{text-align:center;padding:40px 20px;color:var(--muted);font-size:14px}
-
-@media(max-width:480px){
-  .header{padding:12px 14px}
-  .nfm-logo{height:22px}
-  .headshot{width:42px;height:42px}
-  .main{padding:14px 12px 32px}
-  .day-input{width:36px;font-size:12px}
-  .metric-text{font-size:12px}
-  thead th{font-size:10px;padding:7px 4px}
-  tbody td{padding:8px 4px}
-}
+@media(max-width:480px){.header{padding:12px 14px}.nfm-logo{height:22px}.headshot{width:42px;height:42px}.main{padding:14px 12px 32px}.day-input{width:36px;font-size:12px}.metric-text{font-size:12px}thead th{font-size:10px;padding:7px 4px}tbody td{padding:8px 4px}}
 </style>
 </head>
 <body>
-
 <div class="header">
   <div class="header-left">
     <img src="https://nfmlending.com/wp-content/uploads/2020/09/logo_NFMLending.svg" alt="NFM Lending" class="nfm-logo">
     <div class="header-divider"></div>
-    <img src="https://pwang318.github.io/lp-scorecards/isaak.jpeg" alt="Isaak" class="headshot">
+    <img src="https://pwang318.github.io/lp-scorecards/Image%20(4).jpg" alt="Isaak" class="headshot">
     <div class="header-brand">
       <div class="header-team">CORE Team &middot; NFM Lending</div>
       <div class="header-name">Isaak &mdash; Weekly Scorecard</div>
@@ -133,12 +99,10 @@ tbody td:first-child{text-align:left;padding-left:14px}
   </div>
   <div class="header-week" id="week-label">Loading...</div>
 </div>
-
 <div class="tab-nav">
   <button class="active" onclick="switchTab('scorecard',this)">This Week</button>
   <button onclick="switchTab('history',this)">My History</button>
 </div>
-
 <div id="tab-scorecard" class="tab-panel active">
   <div class="week-bar">
     <button id="prev-btn">&#8592; Prev week</button>
@@ -148,18 +112,9 @@ tbody td:first-child{text-align:left;padding-left:14px}
   <div class="main">
     <div class="summary-grid" id="summary-grid"></div>
     <div class="card">
-      <div class="card-header">
-        <span>Daily Activity Log</span>
-        <span class="goal-hint">Enter your numbers each day</span>
-      </div>
+      <div class="card-header"><span>Daily Activity Log</span><span class="goal-hint">Enter your numbers each day</span></div>
       <table>
-        <thead>
-          <tr>
-            <th>Metric</th>
-            <th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th>
-            <th class="total-th">Total</th>
-          </tr>
-        </thead>
+        <thead><tr><th>Metric</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th class="total-th">Total</th></tr></thead>
         <tbody id="table-body"></tbody>
       </table>
     </div>
@@ -170,7 +125,6 @@ tbody td:first-child{text-align:left;padding-left:14px}
     <div class="footer">Closing Loans. Opening Doors. Changing Lives.</div>
   </div>
 </div>
-
 <div id="tab-history" class="tab-panel">
   <div class="main">
     <div class="history-controls">
@@ -186,133 +140,25 @@ tbody td:first-child{text-align:left;padding-left:14px}
     <div class="footer">Closing Loans. Opening Doors. Changing Lives.</div>
   </div>
 </div>
-
 <script>
 const PERSON="Isaak",METRICS=[{"key": "apps_1003", "label": "1003's", "icon": "\ud83d\udccb", "goal": 10}, {"key": "realtor_calls", "label": "Realtor calls", "icon": "\ud83d\udcde", "goal": 100}, {"key": "meetings", "label": "Realtor meetings scheduled", "icon": "\ud83d\udcc5", "goal": 10}],DAYS=["Mon","Tue","Wed","Thu","Fri"];
 const SUPABASE_URL="https://uclucbdkjqyqdvifyptx.supabase.co",SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVjbHVjYmRranF5cWR2aWZ5cHR4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDY4MzQ4MzQsImV4cCI6MjAyMjQxMDgzNH0.rAMRMWGd9UEjhauRr8vGFRkMuB7VIH3WMvJAkCMY0Sc";
 const CHART_COLORS=["#1a2e5a","#b8922a","#2a7a3b","#c0392b","#8e44ad"];
-
 function getMonday(d){const dt=new Date(d),day=dt.getDay();dt.setDate(dt.getDate()+(day===0?-6:1-day));dt.setHours(0,0,0,0);return dt;}
 function fmtRange(mon){const fri=new Date(mon);fri.setDate(fri.getDate()+4);const o={month:'short',day:'numeric'};return mon.toLocaleDateString('en-US',o)+' – '+fri.toLocaleDateString('en-US',o);}
 function weekKey(mon){return mon.getFullYear()+'-'+String(mon.getMonth()+1).padStart(2,'0')+'-'+String(mon.getDate()).padStart(2,'0');}
 function pctColor(p){return p>=1?'#2a7a3b':p>=0.6?'#b8922a':'#9ca3af';}
 function pctBadge(t,g){const p=t/g,c=p>=1?'pct-green':p>=0.6?'pct-amber':'pct-gray';return '<span class="pct-badge '+c+'">'+Math.round(p*100)+'%</span>';}
-
 let currentMonday=getMonday(new Date()),currentData={},historyCharts=[];
-
-function switchTab(tab,btn){
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab-nav button').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+tab).classList.add('active');btn.classList.add('active');
-  if(tab==='history')loadHistory();
-}
+function switchTab(tab,btn){document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab-nav button').forEach(b=>b.classList.remove('active'));document.getElementById('tab-'+tab).classList.add('active');btn.classList.add('active');if(tab==='history')loadHistory();}
 function getTotal(key,data){return DAYS.reduce((s,d)=>s+(parseInt((data||currentData)[key+'_'+d]||0)||0),0);}
-function renderWeekLabel(){
-  const wk=weekKey(currentMonday),isNow=weekKey(getMonday(new Date()))===wk;
-  document.getElementById('week-label').textContent=isNow?'This week':fmtRange(currentMonday);
-  document.getElementById('week-range').textContent=fmtRange(currentMonday);
-}
-function renderSummary(){
-  const grid=document.getElementById('summary-grid');grid.innerHTML='';
-  METRICS.forEach(m=>{
-    const t=getTotal(m.key),pct=Math.min(t/m.goal,1),color=pctColor(pct);
-    const div=document.createElement('div');div.className='summary-card';
-    div.innerHTML='<div class="s-icon">'+m.icon+'</div><div class="s-val" style="color:'+color+'">'+t+'</div><div class="s-label">'+m.label+'</div><div class="s-goal">Goal: '+m.goal+'</div><div class="bar-wrap"><div class="bar-fill" style="width:'+Math.round(pct*100)+'%;background:'+color+'"></div></div>';
-    grid.appendChild(div);
-  });
-}
-function updateTotalCell(m,td){
-  const t=getTotal(m.key),pct=Math.min(t/m.goal,1),color=pctColor(pct);
-  td.innerHTML='<div class="total-wrap"><div class="total-num" style="color:'+color+'">'+t+'</div><div class="total-goal">/'+m.goal+'</div><div class="mini-bar"><div class="mini-bar-fill" style="width:'+Math.round(pct*100)+'%;background:'+color+'"></div></div></div>';
-}
-function renderTable(){
-  const tbody=document.getElementById('table-body');tbody.innerHTML='';
-  METRICS.forEach(m=>{
-    const tr=document.createElement('tr');
-    const tdL=document.createElement('td');
-    tdL.innerHTML='<div class="metric-label"><span class="metric-icon">'+m.icon+'</span><span class="metric-text">'+m.label+'</span></div>';
-    tr.appendChild(tdL);
-    const totalTd=document.createElement('td');
-    DAYS.forEach(day=>{
-      const td=document.createElement('td'),inp=document.createElement('input');
-      inp.type='number';inp.min=0;inp.className='day-input';
-      inp.value=currentData[m.key+'_'+day]||'';inp.placeholder='0';
-      inp.addEventListener('input',()=>{currentData[m.key+'_'+day]=inp.value;updateTotalCell(m,totalTd);renderSummary();});
-      td.appendChild(inp);tr.appendChild(td);
-    });
-    updateTotalCell(m,totalTd);tr.appendChild(totalTd);tbody.appendChild(tr);
-  });
-}
-async function loadWeek(wk){
-  currentData={};document.getElementById('week-label').textContent='Loading...';
-  try{
-    const ctrl=new AbortController(),tid=setTimeout(()=>ctrl.abort(),6000);
-    const res=await fetch(SUPABASE_URL+'/rest/v1/lp_scorecards?person=eq.'+encodeURIComponent(PERSON)+'&week_key=eq.'+wk+'&select=data',
-      {headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+SUPABASE_KEY},signal:ctrl.signal});
-    clearTimeout(tid);
-    const rows=await res.json();
-    if(rows&&rows.length&&rows[0].data)currentData=rows[0].data;
-  }catch(e){console.warn('Load error:',e);}
-  renderWeekLabel();renderTable();renderSummary();
-}
-async function saveWeek(){
-  const wk=weekKey(currentMonday),msgEl=document.getElementById('save-msg');
-  msgEl.textContent='Saving...';msgEl.className='save-msg show';
-  try{
-    const res=await fetch(SUPABASE_URL+'/rest/v1/lp_scorecards',{
-      method:'POST',
-      headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+SUPABASE_KEY,'Content-Type':'application/json',Prefer:'resolution=merge-duplicates'},
-      body:JSON.stringify({person:PERSON,week_key:wk,data:currentData})
-    });
-    msgEl.textContent=(res.ok||res.status===201)?'Saved!':'Error '+res.status;
-    if(!res.ok&&res.status!==201)msgEl.classList.add('error');
-  }catch(e){msgEl.textContent='Could not save';msgEl.classList.add('error');}
-  setTimeout(()=>{msgEl.className='save-msg';},3000);
-}
-async function loadHistory(){
-  const fromEl=document.getElementById('hist-from'),toEl=document.getElementById('hist-to');
-  if(!fromEl.value){const d=new Date();d.setDate(d.getDate()-56);fromEl.value=d.toISOString().slice(0,10);}
-  if(!toEl.value)toEl.value=new Date().toISOString().slice(0,10);
-  const wrap=document.getElementById('history-table-wrap'),chartsEl=document.getElementById('history-charts');
-  wrap.innerHTML='<div class="history-empty">Loading...</div>';chartsEl.innerHTML='';
-  historyCharts.forEach(c=>c.destroy());historyCharts=[];
-  try{
-    const res=await fetch(SUPABASE_URL+'/rest/v1/lp_scorecards?person=eq.'+encodeURIComponent(PERSON)+'&week_key=gte.'+fromEl.value+'&week_key=lte.'+toEl.value+'&order=week_key.desc&select=week_key,data',
-      {headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+SUPABASE_KEY}});
-    const rows=await res.json();
-    if(!rows||!rows.length){wrap.innerHTML='<div class="history-empty">No data found for this date range.</div>';return;}
-    let thead='<thead><tr><th>Week</th>';
-    METRICS.forEach(m=>thead+='<th>'+m.icon+' '+m.label+'</th>');
-    thead+='</tr></thead>';
-    let tbody='<tbody>';
-    rows.forEach(row=>{
-      tbody+='<tr><td style="font-size:11px;white-space:nowrap">'+fmtRange(new Date(row.week_key+'T12:00:00'))+'</td>';
-      METRICS.forEach(m=>{const t=getTotal(m.key,row.data);tbody+='<td>'+t+' '+pctBadge(t,m.goal)+'</td>';});
-      tbody+='</tr>';
-    });
-    tbody+='</tbody>';
-    wrap.innerHTML='<div style="overflow-x:auto"><table class="history-table">'+thead+tbody+'</table></div>';
-    const weeks=rows.map(r=>new Date(r.week_key+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})).reverse();
-    METRICS.forEach((m,i)=>{
-      const vals=rows.map(r=>getTotal(m.key,r.data)).reverse();
-      const div=document.createElement('div');div.className='chart-wrap';
-      div.innerHTML='<div class="chart-title">'+m.icon+' '+m.label+' — weekly trend</div><div class="chart-area"><canvas id="chart-'+i+'"></canvas></div>';
-      chartsEl.appendChild(div);
-      setTimeout(()=>{
-        const ch=new Chart(document.getElementById('chart-'+i).getContext('2d'),{
-          type:'line',
-          data:{labels:weeks,datasets:[
-            {label:m.label,data:vals,borderColor:CHART_COLORS[i%5],backgroundColor:CHART_COLORS[i%5]+'22',borderWidth:2,pointRadius:4,fill:true,tension:0.3},
-            {label:'Goal',data:weeks.map(()=>m.goal),borderColor:'#ccc',borderWidth:1.5,borderDash:[4,4],pointRadius:0,fill:false}
-          ]},
-          options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{font:{size:11}}},x:{ticks:{font:{size:11}}}}}
-        });
-        historyCharts.push(ch);
-      },50);
-    });
-  }catch(e){wrap.innerHTML='<div class="history-empty">Could not load history.</div>';console.warn(e);}
-}
-
+function renderWeekLabel(){const wk=weekKey(currentMonday),isNow=weekKey(getMonday(new Date()))===wk;document.getElementById('week-label').textContent=isNow?'This week':fmtRange(currentMonday);document.getElementById('week-range').textContent=fmtRange(currentMonday);}
+function renderSummary(){const grid=document.getElementById('summary-grid');grid.innerHTML='';METRICS.forEach(m=>{const t=getTotal(m.key),pct=Math.min(t/m.goal,1),color=pctColor(pct);const div=document.createElement('div');div.className='summary-card';div.innerHTML='<div class="s-icon">'+m.icon+'</div><div class="s-val" style="color:'+color+'">'+t+'</div><div class="s-label">'+m.label+'</div><div class="s-goal">Goal: '+m.goal+'</div><div class="bar-wrap"><div class="bar-fill" style="width:'+Math.round(pct*100)+'%;background:'+color+'"></div></div>';grid.appendChild(div);});}
+function updateTotalCell(m,td){const t=getTotal(m.key),pct=Math.min(t/m.goal,1),color=pctColor(pct);td.innerHTML='<div class="total-wrap"><div class="total-num" style="color:'+color+'">'+t+'</div><div class="total-goal">/'+m.goal+'</div><div class="mini-bar"><div class="mini-bar-fill" style="width:'+Math.round(pct*100)+'%;background:'+color+'"></div></div></div>';}
+function renderTable(){const tbody=document.getElementById('table-body');tbody.innerHTML='';METRICS.forEach(m=>{const tr=document.createElement('tr');const tdL=document.createElement('td');tdL.innerHTML='<div class="metric-label"><span class="metric-icon">'+m.icon+'</span><span class="metric-text">'+m.label+'</span></div>';tr.appendChild(tdL);const totalTd=document.createElement('td');DAYS.forEach(day=>{const td=document.createElement('td'),inp=document.createElement('input');inp.type='number';inp.min=0;inp.className='day-input';inp.value=currentData[m.key+'_'+day]||'';inp.placeholder='0';inp.addEventListener('input',()=>{currentData[m.key+'_'+day]=inp.value;updateTotalCell(m,totalTd);renderSummary();});td.appendChild(inp);tr.appendChild(td);});updateTotalCell(m,totalTd);tr.appendChild(totalTd);tbody.appendChild(tr);});}
+async function loadWeek(wk){currentData={};document.getElementById('week-label').textContent='Loading...';try{const ctrl=new AbortController(),tid=setTimeout(()=>ctrl.abort(),6000);const res=await fetch(SUPABASE_URL+'/rest/v1/lp_scorecards?person=eq.'+encodeURIComponent(PERSON)+'&week_key=eq.'+wk+'&select=data',{headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+SUPABASE_KEY},signal:ctrl.signal});clearTimeout(tid);const rows=await res.json();if(rows&&rows.length&&rows[0].data)currentData=rows[0].data;}catch(e){console.warn('Load error:',e);}renderWeekLabel();renderTable();renderSummary();}
+async function saveWeek(){const wk=weekKey(currentMonday),msgEl=document.getElementById('save-msg');msgEl.textContent='Saving...';msgEl.className='save-msg show';try{const res=await fetch(SUPABASE_URL+'/rest/v1/lp_scorecards',{method:'POST',headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+SUPABASE_KEY,'Content-Type':'application/json',Prefer:'resolution=merge-duplicates'},body:JSON.stringify({person:PERSON,week_key:wk,data:currentData})});msgEl.textContent=(res.ok||res.status===201)?'Saved!':'Error '+res.status;if(!res.ok&&res.status!==201)msgEl.classList.add('error');}catch(e){msgEl.textContent='Could not save';msgEl.classList.add('error');}setTimeout(()=>{msgEl.className='save-msg';},3000);}
+async function loadHistory(){const fromEl=document.getElementById('hist-from'),toEl=document.getElementById('hist-to');if(!fromEl.value){const d=new Date();d.setDate(d.getDate()-56);fromEl.value=d.toISOString().slice(0,10);}if(!toEl.value)toEl.value=new Date().toISOString().slice(0,10);const wrap=document.getElementById('history-table-wrap'),chartsEl=document.getElementById('history-charts');wrap.innerHTML='<div class="history-empty">Loading...</div>';chartsEl.innerHTML='';historyCharts.forEach(c=>c.destroy());historyCharts=[];try{const res=await fetch(SUPABASE_URL+'/rest/v1/lp_scorecards?person=eq.'+encodeURIComponent(PERSON)+'&week_key=gte.'+fromEl.value+'&week_key=lte.'+toEl.value+'&order=week_key.desc&select=week_key,data',{headers:{apikey:SUPABASE_KEY,Authorization:'Bearer '+SUPABASE_KEY}});const rows=await res.json();if(!rows||!rows.length){wrap.innerHTML='<div class="history-empty">No data found for this date range.</div>';return;}let thead='<thead><tr><th>Week</th>';METRICS.forEach(m=>thead+='<th>'+m.icon+' '+m.label+'</th>');thead+='</tr></thead>';let tbody='<tbody>';rows.forEach(row=>{tbody+='<tr><td style="font-size:11px;white-space:nowrap">'+fmtRange(new Date(row.week_key+'T12:00:00'))+'</td>';METRICS.forEach(m=>{const t=getTotal(m.key,row.data);tbody+='<td>'+t+' '+pctBadge(t,m.goal)+'</td>';});tbody+='</tr>';});tbody+='</tbody>';wrap.innerHTML='<div style="overflow-x:auto"><table class="history-table">'+thead+tbody+'</table></div>';const weeks=rows.map(r=>new Date(r.week_key+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})).reverse();METRICS.forEach((m,i)=>{const vals=rows.map(r=>getTotal(m.key,r.data)).reverse();const div=document.createElement('div');div.className='chart-wrap';div.innerHTML='<div class="chart-title">'+m.icon+' '+m.label+' — weekly trend</div><div class="chart-area"><canvas id="chart-'+i+'"></canvas></div>';chartsEl.appendChild(div);setTimeout(()=>{const ch=new Chart(document.getElementById('chart-'+i).getContext('2d'),{type:'line',data:{labels:weeks,datasets:[{label:m.label,data:vals,borderColor:CHART_COLORS[i%5],backgroundColor:CHART_COLORS[i%5]+'22',borderWidth:2,pointRadius:4,fill:true,tension:0.3},{label:'Goal',data:weeks.map(()=>m.goal),borderColor:'#ccc',borderWidth:1.5,borderDash:[4,4],pointRadius:0,fill:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{font:{size:11}}},x:{ticks:{font:{size:11}}}}}});historyCharts.push(ch);},50);});}catch(e){wrap.innerHTML='<div class="history-empty">Could not load history.</div>';console.warn(e);}}
 document.getElementById('prev-btn').addEventListener('click',()=>{currentMonday.setDate(currentMonday.getDate()-7);loadWeek(weekKey(currentMonday));});
 document.getElementById('next-btn').addEventListener('click',()=>{currentMonday.setDate(currentMonday.getDate()+7);loadWeek(weekKey(currentMonday));});
 document.getElementById('save-btn').addEventListener('click',saveWeek);
